@@ -5,8 +5,8 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-app.get("/text", (req, res) => {
-  res.send("hello world text  path!");
+app.get("/test", (req, res) => {
+  res.send("hello world test path!");
 });
 
 app.listen(3000, () => {
