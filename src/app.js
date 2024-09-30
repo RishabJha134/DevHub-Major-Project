@@ -1,14 +1,26 @@
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("hello world");
+// database connection:-
+const { connectDB } = require("./config/database");
+
+const User = require("./models/user");
+
+app.post("/signup", async (req,res) => {
+  // creating a new instance of the User Model.
+  const user = new User({
+    firstName: "Rishab",
+    lastName: "Jha",
+    emailId: "rishab.jha@gmail.com",
+    password: "123456789",
+  });
+
+  await user.save();
+  res.send("User Added successfully!");
+  console.log(user);
 });
 
-app.get("/test", (req, res) => {
-  res.send("hello world test path!");
-});
-
-app.listen(3000, () => {
-  console.log("Server is running on port 3000"); // Log the server is running on port 3000
+connectDB();
+app.listen(7777, () => {
+  console.log("Server is listening on port 7777");
 });
