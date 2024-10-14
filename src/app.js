@@ -48,7 +48,6 @@ app.get("/user", async (req, res) => {
   }
 });
 
-
 // feed api:- GET /feed - get all the users from the database.
 app.get("/feed", async (req, res) => {
   try {
@@ -56,6 +55,38 @@ app.get("/feed", async (req, res) => {
     res.send({ users });
   } catch (err) {
     console.error("Error finding users", err.message);
+    res.status(500).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
+  }
+});
+
+// delete a user by id:-
+app.delete("/user", async (req, res) => {
+  const { _id } = req.body;
+  try {
+    const deletedUser = await User.findByIdAndDelete({ _id: _id });
+    if (deletedUser) {
+      res.send("User deleted successfully");
+    } else {
+      res.status(404).send("No user found with this id");
+    }
+  } catch (err) {
+    console.error("Error deleting user", err.message);
+    res.status(500).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
+  }
+});
+
+// update a user:-
+app.patch("/user", async (req, res) => {
+  const { _id } = req.body;
+  const data = req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate({ _id: _id }, data, {
+      returnDocument: "after",
+    });
+    console.log(user);
+  } catch (err) {
+    console.error("Error updating user", err.message);
     res.status(500).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
   }
 });
@@ -85,3 +116,9 @@ app.listen(7777, () => {
 //     res.status(400).send("Server Error:"+err.message); // Returning a 500 Internal Server Error.
 //   }
 // });
+
+// get user by id:-
+// app.get("/userbyid", async (req, res) => {
+//   const users = await User.findById({_id:req.body._id});
+//   console.log(users);
+// })
