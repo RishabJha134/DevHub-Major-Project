@@ -11,13 +11,15 @@ app.use(express.json());
 
 // dynamic signup routes:-
 app.post("/signup", async (req, res) => {
-  const { firstName, lastName, emailId, password } = req.body;
+  const { firstName, lastName, emailId, password,gender,age } = req.body;
   console.log(req.body);
   const user = await User({
     firstName: firstName,
     lastName: lastName,
     emailId: emailId,
     password: password,
+    gender:gender,
+    age:age,
   });
 
   console.log(user);
@@ -83,6 +85,7 @@ app.patch("/user", async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate({ _id: _id }, data, {
       returnDocument: "after",
+      runValidators:true,
     });
     console.log(user);
   } catch (err) {
@@ -90,6 +93,9 @@ app.patch("/user", async (req, res) => {
     res.status(500).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
   }
 });
+
+
+
 
 connectDB();
 app.listen(7777, () => {
@@ -122,3 +128,18 @@ app.listen(7777, () => {
 //   const users = await User.findById({_id:req.body._id});
 //   console.log(users);
 // })
+
+// update by using the email:-
+// app.patch("/user", async (req, res) => {
+//   const { emailId } = req.body;
+//   const data = req.body;
+//   try {
+//     const user = await User.findOneAndUpdate({ emailId: emailId }, data, {
+//       returnDocument: "after",
+//     });
+//     console.log(user);
+//   } catch (err) {
+//     console.error("Error updating user", err.message);
+//     res.status(500).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
+//   }
+// });
