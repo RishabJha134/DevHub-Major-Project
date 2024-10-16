@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,6 +18,12 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
+
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Invalid email address");
+        }
+      },
     },
     password: {
       type: String,
@@ -42,6 +49,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default:
         "https://media.istockphoto.com/id/1128484864/vector/user.jpg?s=612x612&w=0&k=20&c=QRjA76wOhJq1ywgsny3o_mwHCRc4uBmohqLZ4e52rP8=",
+
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Invalid photo URL");
+        }
+      },
     },
     about: {
       type: String,

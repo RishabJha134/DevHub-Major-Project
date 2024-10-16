@@ -1,48 +1,44 @@
 const express = require("express");
 const app = express();
+const bcrypt = require("bcrypt");
 
 // database connection:-
 const { connectDB } = require("./config/database");
 
 const User = require("./models/user");
+const { validateSignUpData } = require("./utlls/validation");
 
 // middleware is active for all the routes:- convert backend ke andar ka json data jo hum bhej rahe hai usko js object me kar rha hai. json -> js objects and make this readable for in the req.body in every api:-
 app.use(express.json());
 
 // dynamic signup routes:-
 app.post("/signup", async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    emailId,
-    password,
-    gender,
-    age,
-    photoUrl,
-    about,
-    skills,
-  } = req.body;
-  console.log(req.body);
-  const user = await User({
-    firstName: firstName,
-    lastName: lastName,
-    emailId: emailId,
-    password: password,
-    gender: gender,
-    age: age,
-    photoUrl,
-    about,
-    skills,
-  });
-
-  console.log(user);
-
   try {
+    // step1:- validation:-
+    validateSignUpData(req);
+
+    // step2:- password hashing:-
+    const { firstName, lastName, emailId, password } = req.body;
+    console.log(password);
+
+    const hashedPassword = await bcrypt.hash(password, 11);
+    console.log(hashedPassword);
+
+    // step3:- creating a new instance of the User Model
+    const user = await User({
+      firstName,
+      lastName,
+      emailId,
+      password: hashedPassword,
+    });
+
+    console.log(user);
+
     await user.save();
-    res.send("user added successfully");
+    res.send("user added successfully!");
   } catch (err) {
     console.error("Error adding user", err.message);
-    res.status(400).send("Server Error:" + err.message);
+    res.status(400).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
   }
 });
 
@@ -104,9 +100,8 @@ app.patch("/user/:userId", async (req, res) => {
     skills,
   } = req.body;
   try {
-
     if (skills.length > 11) {
-      throw new Error("skills cannot be more than 11")
+      throw new Error("skills cannot be more than 11");
     }
 
     const data = {
@@ -176,5 +171,50 @@ app.listen(7777, () => {
 //   } catch (err) {
 //     console.error("Error updating user", err.message);
 //     res.status(500).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
+//   }
+// });
+
+// second method for signup:-
+// app.post("/signup", async (req, res) => {
+//   const {
+//     firstName,
+//     lastName,
+//     emailId,
+//     password,
+//     gender,
+//     age,
+//     photoUrl,
+//     about,
+//     skills,
+//   } = req.body;
+//   console.log(req.body);
+
+//   try {
+
+//     const alreadyExist = await User.findOne({ emailId: emailId });
+
+//     if (alreadyExist) {
+//       throw new Error("User already exists with this emailId");
+//     }
+
+//     const user = await User({
+//       firstName: firstName,
+//       lastName: lastName,
+//       emailId: emailId,
+//       password: password,
+//       gender: gender,
+//       age: age,
+//       photoUrl,
+//       about,
+//       skills,
+//     });
+
+//     console.log(user);
+//     await user.save();
+//     res.send("user added successfully");
+
+//   } catch (err) {
+//     console.error("Error adding user", err.message);
+//     res.status(400).send("Server Error:" + err.message);
 //   }
 // });
