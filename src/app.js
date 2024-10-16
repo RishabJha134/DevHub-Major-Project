@@ -42,6 +42,30 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// login api:-
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    const user = await User.findOne({ emailId: emailId });
+    if (!user) {
+      throw new Error("Invalid Credentials!");
+    }
+
+    // for validation you need to create diffrent helper custom function only for the email and password
+    // validateSignUpData(req);
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
+      res.send("Login success!");
+    } else {
+      throw new Error("Invalid Credentials");
+    }
+  } catch (err) {
+    res.status(400).send("Error:" + err.message); // Returning a 500 Internal Server Error.
+  }
+});
+
 // find user api:-
 app.get("/user", async (req, res) => {
   const { emailId } = req.body;
