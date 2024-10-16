@@ -11,15 +11,28 @@ app.use(express.json());
 
 // dynamic signup routes:-
 app.post("/signup", async (req, res) => {
-  const { firstName, lastName, emailId, password,gender,age } = req.body;
+  const {
+    firstName,
+    lastName,
+    emailId,
+    password,
+    gender,
+    age,
+    photoUrl,
+    about,
+    skills,
+  } = req.body;
   console.log(req.body);
   const user = await User({
     firstName: firstName,
     lastName: lastName,
     emailId: emailId,
     password: password,
-    gender:gender,
-    age:age,
+    gender: gender,
+    age: age,
+    photoUrl,
+    about,
+    skills,
   });
 
   console.log(user);
@@ -78,24 +91,46 @@ app.delete("/user", async (req, res) => {
 });
 
 // update a user:-
-app.patch("/user", async (req, res) => {
-  const { _id } = req.body;
-  const data = req.body;
-
+app.patch("/user/:userId", async (req, res) => {
+  const _id = req.params.userId;
+  const {
+    firstName,
+    lastName,
+    password,
+    gender,
+    age,
+    photoUrl,
+    about,
+    skills,
+  } = req.body;
   try {
+
+    if (skills.length > 11) {
+      throw new Error("skills cannot be more than 11")
+    }
+
+    const data = {
+      firstName,
+      lastName,
+      password,
+      gender,
+      age,
+      photoUrl,
+      about,
+      skills,
+    };
+
     const user = await User.findByIdAndUpdate({ _id: _id }, data, {
       returnDocument: "after",
-      runValidators:true,
+      runValidators: true,
     });
+    res.send("User updated Successfully:" + user);
     console.log(user);
   } catch (err) {
     console.error("Error updating user", err.message);
     res.status(500).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
   }
 });
-
-
-
 
 connectDB();
 app.listen(7777, () => {
