@@ -1,15 +1,10 @@
 const express = require("express");
 const app = express();
-const bcrypt = require("bcrypt");
+
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
 
 // database connection:-
 const { connectDB } = require("./config/database");
-
-const {User, getJWT} = require("./models/user");
-const { validateSignUpData } = require("./utils/validation");
-const { userAuth } = require("./middlewares/auth");
 
 // middleware is active for all the routes:- convert backend ke andar ka json data jo hum bhej rahe hai usko js object me kar rha hai. json -> js objects and make this readable for in the req.body in every api:-
 app.use(express.json());
@@ -17,95 +12,14 @@ app.use(express.json());
 // cookie-parser
 app.use(cookieParser()); // Correct initialization
 
-// dynamic signup routes:-
-app.post("/signup", async (req, res) => {
-  try {
-    // step1:- validation:-
-    validateSignUpData(req);
+// Routing:-
+const { authRouter } = require("./routes/auth");
+const { profileRouter } = require("./routes/profile");
+const { requestRouter } = require("./routes/request");
 
-    // step2:- password hashing:-
-    const { firstName, lastName, emailId, password } = req.body;
-    console.log(password);
-
-    const hashedPassword = await bcrypt.hash(password, 11);
-    console.log(hashedPassword);
-
-    // step3:- creating a new instance of the User Model
-    const user = await User({
-      firstName,
-      lastName,
-      emailId,
-      password: hashedPassword,
-    });
-
-    console.log(user);
-
-    await user.save();
-    res.send("user added successfully!");
-  } catch (err) {
-    console.error("Error adding user", err.message);
-    res.status(400).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.
-  }
-});
-
-// login api:-
-app.post("/login", async (req, res) => {
-  console.log("hello world");
-  try {
-    const { emailId, password } = req.body;
-    const user = await User.findOne({ emailId: emailId });
-    console.log(user);
-    if (!user) {
-      throw new Error("Invalid Credentials!");
-    }
-
-    // for validation you need to create diffrent helper custom function only for the email and password
-    // validateSignUpData(req);
-
-    const isMatch = await user.validatePassword(password);
-    console.log(isMatch);
-
-    if (isMatch) {
-      // advance authentication Steps by help of jwt token:-
-      // step1:- create a jwt token:-
-      // const token = await jwt.sign({ _id: user._id }, "secret-key", {
-      //   expiresIn: "7d",
-      // });
-      // console.log(token);
-
-      // 2nd method for creating a jwt token:-
-  
-      const token = await user.getJWT();
-      console.log(token);
-
-      // step2:- set the jwt token inside the cookies and then send back to the server:-
-      res.cookie("token", token);
-      res.send("Login success!");
-    } else {
-      throw new Error("Invalid Credentials");
-    }
-  } catch (err) {
-    res.status(400).send("Error:" + err.message); // Returning a 500 Internal Server Error.
-  }
-});
-
-// profile api:-
-app.get("/profile", userAuth, async (req, res) => {
-  try {
-    const user = req.user;
-
-    res.send(user);
-  } catch (err) {
-    res.status(400).send("Error:" + err.message);
-  }
-});
-
-app.post("/sendConnectionRequest", userAuth, async (req, res) => {
-  const user = req.user;
-  console.log("sending the connection request");
-
-  res.send(user.firstName + " sending the connection request");
-});
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
 
 connectDB();
 app.listen(7777, () => {
