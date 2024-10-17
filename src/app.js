@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken");
 // database connection:-
 const { connectDB } = require("./config/database");
 
-const User = require("./models/user");
-const { validateSignUpData } = require("./utlls/validation");
+const {User, getJWT} = require("./models/user");
+const { validateSignUpData } = require("./utils/validation");
 const { userAuth } = require("./middlewares/auth");
 
 // middleware is active for all the routes:- convert backend ke andar ka json data jo hum bhej rahe hai usko js object me kar rha hai. json -> js objects and make this readable for in the req.body in every api:-
@@ -62,15 +62,20 @@ app.post("/login", async (req, res) => {
     // for validation you need to create diffrent helper custom function only for the email and password
     // validateSignUpData(req);
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await user.validatePassword(password);
     console.log(isMatch);
 
     if (isMatch) {
       // advance authentication Steps by help of jwt token:-
       // step1:- create a jwt token:-
-      const token = await jwt.sign({ _id: user._id }, "secret-key", {
-        expiresIn: "7d",
-      });
+      // const token = await jwt.sign({ _id: user._id }, "secret-key", {
+      //   expiresIn: "7d",
+      // });
+      // console.log(token);
+
+      // 2nd method for creating a jwt token:-
+  
+      const token = await user.getJWT();
       console.log(token);
 
       // step2:- set the jwt token inside the cookies and then send back to the server:-
