@@ -39,12 +39,16 @@ const userSchema = new mongoose.Schema(
 
     gender: {
       type: String,
-
-      validate(value) {
-        if (!["male", "female", "others"].includes(value)) {
-          throw new Error("Gender must be male, female or other");
-        }
+      enum: {
+        values: ["male", "female", "other"],
+        message: `{VALUE} is not a valid gender type`,
       },
+
+      // validate(value) {
+      //   if (!["male", "female", "others"].includes(value)) {
+      //     throw new Error("Gender must be male, female or other");
+      //   }
+      // },
     },
 
     photoUrl: {
@@ -77,24 +81,24 @@ const userSchema = new mongoose.Schema(
 //   return token;
 // }
 
+// compounding index:- when we want to find user firstName and lastName:-
+// userSchema.index({ firstName: 1, lastName: 1 });
 
 // getJWT
-userSchema.methods.getJWT = async function(){
+userSchema.methods.getJWT = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id }, "secret-key", { expiresIn: "7d" });
   return token;
-}
+};
 
 // validatePassword
-userSchema.methods.validatePassword = async function(passwordInputByUser){
+userSchema.methods.validatePassword = async function (passwordInputByUser) {
   const user = this;
   const hashedPassword = user.password;
-  const isMatch = await bcrypt.compare(passwordInputByUser,hashedPassword);
+  const isMatch = await bcrypt.compare(passwordInputByUser, hashedPassword);
   return isMatch;
+};
 
-}
-
-
-const User = mongoose.model("User", userSchema);
+const User = new mongoose.model("User", userSchema);
 // module.exports = User;
 module.exports = { User };
