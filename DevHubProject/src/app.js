@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 // database connection:-
@@ -12,6 +12,14 @@ app.use(express.json());
 // cookie-parser
 app.use(cookieParser()); // Correct initialization
 
+// Enable CORS for cross-origin requests
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow all origins
+    credentials: true, // Allow sending cookies
+  })
+);
+
 // Routing:-
 const { authRouter } = require("./routes/auth");
 const { profileRouter } = require("./routes/profile");
@@ -21,11 +29,11 @@ const { userRouter } = require("./routes/user");
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
-app.use("/",userRouter);
+app.use("/", userRouter);
 
 connectDB();
 app.listen(7777, () => {
-  console.log("Server is listening on port 7777");
+  console.log("Server is listening on port 4000");
 });
 
 // extras:-
