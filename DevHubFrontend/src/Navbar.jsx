@@ -1,18 +1,44 @@
+import axios from "axios";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { removeUser } from "./utils/userSlice";
 
 const Navbar = () => {
-  const user = useSelector((store) => store.user);
-  console.log(user?.data);
+  const user = useSelector((store) => store?.user);
+  console.log("user from navbar: " + JSON.stringify(user));
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    try {
+      const response = await axios.post(
+        "http://localhost:7777/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+      dispatch(removeUser());
+      navigate("/login");
+      alert(response.data.message);
+    } catch (err) {
+      console.error("Error logging out user: ", err);
+    }
+  }
 
   return (
     <div className="navbar bg-base-300">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <Link to={"/"} className="btn btn-ghost text-xl">
+          daisyUI
+        </Link>
       </div>
       {user && (
         <div className="flex-none gap-2">
-          <div className="form-control">Welcome, {user?.data?.firstName}</div>
+          <div className="form-control">Welcome, {user?.firstName}</div>
           <div className="dropdown dropdown-end mx-5">
             <div
               tabIndex={0}
@@ -22,7 +48,7 @@ const Navbar = () => {
               <div className="w-10 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src={`${user?.data?.photoUrl}`}
+                  src={`${user?.photoUrl}`}
                 />
               </div>
             </div>
@@ -31,16 +57,16 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
+                <Link to={"/profile"} className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a>Settings</a>
+                <Link to={"/connections"}>Connections</Link>
               </li>
               <li>
-                <a>Logout</a>
+                <Link onClick={handleLogout}>Logout</Link>
               </li>
             </ul>
           </div>

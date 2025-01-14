@@ -7,6 +7,7 @@ import { addUser } from "./utils/userSlice";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,23 +26,30 @@ const Login = () => {
       " and password: ",
       password
     );
-    //Make API call to login endpoint with provided email and password
-    const response = await axios.post(
-      "http://localhost:7777/login",
-      {
-        emailId: email,
-        password: password,
-      },
-      {
-        withCredentials: true,
-      }
-    );
 
-    dispatch(addUser(response.data));
-    console.log("Login successful" + JSON.stringify(response.data));
-    navigate("/");
-    setEmail("");
-    setPassword("");
+    //Make API call to login endpoint with provided email and password
+
+    try {
+      const response = await axios.post(
+        "http://localhost:7777/login",
+        {
+          emailId: email,
+          password: password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch(addUser(response.data));
+      console.log("Login successful" + JSON.stringify(response.data));
+      navigate("/");
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      console.log(err);
+      setError(err?.response?.data?.message || "something went wrong");
+    }
   }
 
   return (
@@ -84,7 +92,9 @@ const Login = () => {
                   required
                 />
               </div>
+
               <div className="form-control mt-6">
+                <p className="text-red-500 text-lg">{error && error}</p>
                 <button type="submit" className="btn btn-primary">
                   Login
                 </button>
