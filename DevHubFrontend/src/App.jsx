@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import Feed from "./Feed";
 import Connections from "./Connections";
+import Requests from "./Requests";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
                 path="/connections"
                 element={<Connections></Connections>}
               ></Route>
+              <Route path="/requests" element={<Requests></Requests>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
