@@ -24,7 +24,7 @@ const EditProfile = ({ user }) => {
   // Save profile handler
   const saveProfile = async () => {
     setError(""); // Clear existing errors
-    try {
+    try {     
       const res = await axios.patch(
         "http://localhost:7777/profile/edit",
         {
