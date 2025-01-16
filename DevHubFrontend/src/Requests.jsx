@@ -1,22 +1,37 @@
 import axios from "axios";
 // import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "./utils/requestSlice";
+import { addRequests, removeRequest } from "./utils/requestSlice";
 import { useEffect } from "react";
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
 
+  const reviewRequest = async (status, _id) => {
+    try {
+      const res = axios.post(
+        "http://localhost:7777" + "/request/review/" + status + "/" + _id,
+        {},
+        { withCredentials: true }
+      );
+      console.log("response from Requests component: " + res);
+      dispatch(removeRequest(_id));
+    } catch (err) {}
+  };
+
   const fetchRequests = async () => {
     try {
-      const res = await axios.get("http://localhost:7777/user/requests/recieved", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "http://localhost:7777/user/requests/recieved",
+        {
+          withCredentials: true,
+        }
+      );
 
       dispatch(addRequests(res.data.data));
     } catch (err) {
-        console.error("Error fetching requests: ", err);
+      console.error("Error fetching requests: ", err);
     }
   };
 
@@ -56,8 +71,18 @@ const Requests = () => {
               <p>{about}</p>
             </div>
             <div>
-              <button className="btn btn-primary mx-2">Reject</button>
-              <button className="btn btn-secondary mx-2">Accept</button>
+              <button
+                className="btn btn-primary mx-2"
+                onClick={() => reviewRequest("rejected", request._id)}
+              >
+                Reject
+              </button>
+              <button
+                className="btn btn-secondary mx-2"
+                onClick={() => reviewRequest("accepted", request._id)}
+              >
+                Accept
+              </button>
             </div>
           </div>
         );

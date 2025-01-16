@@ -3,9 +3,11 @@ const { validateSignUpData } = require("../utils/validation");
 const bcrypt = require("bcrypt");
 const { User } = require("../models/user");
 const authRouter = express.Router();
+const jwt = require("jsonwebtoken");
 
 // dynamic signup routes:-
 authRouter.post("/signup", async (req, res) => {
+  console.log("hello i am from signup in auth.js")
   try {
     // step1:- validation:-
     validateSignUpData(req);
@@ -27,8 +29,15 @@ authRouter.post("/signup", async (req, res) => {
 
     console.log(user);
 
-    await user.save();
-    res.send("user added successfully!");
+    const savedUser = await user.save();
+    console.log("saved user from auth.js" + savedUser);
+    const token = await savedUser.getJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 8 * 3600000),
+    });
+
+    res.json({ message: "user saved successfully", data: savedUser });
   } catch (err) {
     console.error("Error adding user", err.message);
     res.status(400).send("Server Error:" + err.message); // Returning a 500 Internal Server Error.

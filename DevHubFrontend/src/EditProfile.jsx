@@ -13,8 +13,8 @@ const EditProfile = ({ user }) => {
   const [firstNames, setFirstNames] = useState(firstName);
   const [lastNames, setLastNames] = useState(lastName);
   const [photoUrls, setPhotoUrls] = useState(photoUrl);
-  const [ages, setAges] = useState(age);
-  const [genders, setGenders] = useState(gender);
+  const [ages, setAges] = useState(age || "");
+  const [genders, setGenders] = useState(gender || "");
   const [abouts, setAbouts] = useState(about);
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
