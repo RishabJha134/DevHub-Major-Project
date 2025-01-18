@@ -8,12 +8,12 @@ const UserCard = ({ user = {} }) => {
   // Provide default values in case `user` or its properties are undefined
   const {
     _id,
-    firstName = "Unknown",
-    lastName = "",
-    photoUrl = "https://via.placeholder.com/150", // Placeholder image URL
-    age = "",
-    gender = "",
-    about = "No information provided.",
+    firstName,
+    lastName,
+    photoUrl, // Placeholder image URL
+    age,
+    gender,
+    about,
   } = user;
 
   async function handleSendRequest(status, id) {
@@ -40,7 +40,7 @@ const UserCard = ({ user = {} }) => {
       </figure>
       <div className="card-body">
         <h2 className="card-title">{`${firstName} ${lastName}`}</h2>
-        {age && gender && <p>{`${age}, ${gender}`}</p>}
+        <p>{`${age}, ${gender}`}</p>
         <p>{about}</p>
         <div className="card-actions justify-center my-4">
           <button

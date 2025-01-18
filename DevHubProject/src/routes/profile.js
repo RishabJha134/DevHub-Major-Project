@@ -3,6 +3,7 @@ const { userAuth } = require("../middlewares/auth");
 const { validateEditProfileData } = require("../utils/validation");
 const profileRouter = express.Router();
 const bcrypt = require("bcrypt");
+const upload = require("../middlewares/multerConfig");
 
 // profile api:-
 
@@ -19,26 +20,54 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
   }
 });
 
-profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
-  try {
-    if (!validateEditProfileData(req)) {
-      throw new Error("please provide a valid input");
+
+// Profile edit route
+profileRouter.patch(
+  "/profile/edit",
+  userAuth,
+  upload.single("photoFile"),
+  async (req, res) => {
+    try {
+      const loggedInUser = req.user;
+
+      // Validate required fields
+      const { firstName, lastName, age, gender, about } = req.body;
+      if (!firstName || firstName.length < 4) {
+        throw new Error("First name must be at least 4 characters long.");
+      }
+      if (age && isNaN(age)) {
+        throw new Error("Age must be a valid number.");
+      }
+      if (gender && !["male", "female", "other"].includes(gender.toLowerCase())) {
+        throw new Error("Gender must be 'male', 'female', or 'other'.");
+      }
+
+      // Handle Cloudinary upload
+      if (req.file) {
+        loggedInUser.photoUrl = req.file.path; // Cloudinary URL is in `req.file.path`
+      }
+
+      // Update user data
+      loggedInUser.firstName = firstName || loggedInUser.firstName;
+      loggedInUser.lastName = lastName || loggedInUser.lastName;
+      loggedInUser.age = age ? parseInt(age) : loggedInUser.age;
+      loggedInUser.gender = gender || loggedInUser.gender;
+      loggedInUser.about = about || loggedInUser.about;
+
+      // Save changes to the database
+      await loggedInUser.save();
+
+      res.status(200).json({
+        message: `${loggedInUser.firstName}, your profile was edited successfully.`,
+        data: loggedInUser,
+      });
+    } catch (err) {
+      console.error("Error editing profile:", err.message);
+      res.status(400).json({ error: err.message });
     }
-
-    const loggedInUser = req.user;
-
-    Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]));
-
-    await loggedInUser.save();
-    console.log("logged in user" + loggedInUser);
-    res.json({
-      message: loggedInUser.firstName + "your profile edit successfully",
-      data: loggedInUser,
-    });
-  } catch (err) {
-    res.status(400).send("Error:" + err.message);
   }
-});
+);
+
 
 profileRouter.patch("/profile/password", userAuth, async (req, res) => {
   try {

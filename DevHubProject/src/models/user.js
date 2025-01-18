@@ -56,11 +56,11 @@ const userSchema = new mongoose.Schema(
       default:
         "https://media.istockphoto.com/id/1128484864/vector/user.jpg?s=612x612&w=0&k=20&c=QRjA76wOhJq1ywgsny3o_mwHCRc4uBmohqLZ4e52rP8=",
 
-      validate(value) {
-        if (!validator.isURL(value)) {
-          throw new Error("Invalid photo URL");
-        }
-      },
+      // validate(value) {
+      //   if (!validator.isURL(value)) {
+      //     throw new Error("Invalid photo URL");
+      //   }
+      // },
     },
     about: {
       type: String,

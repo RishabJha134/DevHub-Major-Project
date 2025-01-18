@@ -13,36 +13,54 @@ const EditProfile = ({ user }) => {
   const [firstNames, setFirstNames] = useState(firstName);
   const [lastNames, setLastNames] = useState(lastName);
   const [photoUrls, setPhotoUrls] = useState(photoUrl);
+  const [photoFile, setPhotoFile] = useState(null); // For storing the file
   const [ages, setAges] = useState(age || "");
-  const [genders, setGenders] = useState(gender || "");
+  const [genders, setGenders] = useState(gender || ""); // Default to current gender
   const [abouts, setAbouts] = useState(about);
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
 
   const dispatch = useDispatch();
 
+  // Handle file upload
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPhotoFile(file);
+      setPhotoUrls(URL.createObjectURL(file)); // Create preview URL
+    }
+  };
+
   // Save profile handler
   const saveProfile = async () => {
     setError(""); // Clear existing errors
-    try {     
+    try {
+      const formData = new FormData();
+      formData.append("firstName", firstNames);
+      formData.append("lastName", lastNames);
+      formData.append("photoFile", photoFile); // Append file
+      formData.append("age", ages);
+      formData.append("gender", genders);
+      formData.append("about", abouts);
+
       const res = await axios.patch(
         "http://localhost:7777/profile/edit",
+        formData,
         {
-          firstName: firstNames,
-          lastName: lastNames,
-          photoUrl: photoUrls,
-          age: ages,
-          gender: genders,
-          about: abouts,
-        },
-        { withCredentials: true }
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        }
       );
 
       dispatch(addUser(res?.data?.data)); // Update Redux store
       setShowToast(true); // Show success toast
       setTimeout(() => setShowToast(false), 3000); // Hide toast after 3 seconds
     } catch (err) {
-      setError(err?.response?.data || "An error occurred while saving the profile.");
+      console.log("Error from edit profile:", err);
+      setError(
+        err?.response?.data?.error ||
+          "An error occurred while saving the profile."
+      );
     }
   };
 
@@ -80,14 +98,23 @@ const EditProfile = ({ user }) => {
 
                 <label className="form-control w-full max-w-xs my-2">
                   <div className="label">
-                    <span className="label-text">Photo URL:</span>
+                    <span className="label-text">Profile Picture:</span>
                   </div>
                   <input
-                    type="text"
-                    value={photoUrls}
-                    className="input input-bordered w-full max-w-xs"
-                    onChange={(e) => setPhotoUrls(e.target.value)}
+                    type="file"
+                    accept="image/*"
+                    className="file-input file-input-bordered w-full max-w-xs"
+                    onChange={handleFileChange}
                   />
+                  {/* {photoUrls && (
+                    <div className="mt-3">
+                      <img
+                        src={photoUrls}
+                        alt="Profile Preview"
+                        className="w-24 h-24 rounded-full object-cover"
+                      />
+                    </div>
+                  )} */}
                 </label>
 
                 <label className="form-control w-full max-w-xs my-2">
@@ -106,12 +133,18 @@ const EditProfile = ({ user }) => {
                   <div className="label">
                     <span className="label-text">Gender:</span>
                   </div>
-                  <input
-                    type="text"
+                  <select
                     value={genders}
-                    className="input input-bordered w-full max-w-xs"
+                    className="select select-bordered w-full max-w-xs"
                     onChange={(e) => setGenders(e.target.value)}
-                  />
+                  >
+                    <option value="" disabled>
+                      Select Gender
+                    </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
                 </label>
 
                 <label className="form-control w-full max-w-xs my-2">

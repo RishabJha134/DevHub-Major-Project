@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 // database connection:-
 const { connectDB } = require("./config/database");
@@ -11,6 +12,15 @@ app.use(express.json());
 
 // cookie-parser
 app.use(cookieParser()); // Correct initialization
+
+
+// TODO:-
+// .env file for both frontend and backend:-
+
+
+// Serve static files
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 // Enable CORS for cross-origin requests
 app.use(
