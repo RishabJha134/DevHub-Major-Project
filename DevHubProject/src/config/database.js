@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      "mongodb+srv://dbAdmin:dbAdmin%4012345@cluster0.voja2.mongodb.net/devTinder"
+      process.env.DB_CONNECTION_SECRET
     );
     console.log("MongoDB Connected...");
   } catch (err) {
