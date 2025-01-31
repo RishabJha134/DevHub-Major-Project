@@ -8,6 +8,7 @@ import appStore from "./utils/appStore";
 import Feed from "./Feed";
 import Connections from "./Connections";
 import Requests from "./Requests";
+import Chat from "./Chat";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
                 element={<Connections></Connections>}
               ></Route>
               <Route path="/requests" element={<Requests></Requests>}></Route>
+              <Route path="/chat/:targetUserId" element={<Chat></Chat>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>

@@ -3,8 +3,9 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-require('dotenv').config();
-console.log(process.env)
+const http = require("http");
+require("dotenv").config();
+// console.log(process.env)
 
 // database connection:-
 const { connectDB } = require("./config/database");
@@ -15,14 +16,11 @@ app.use(express.json());
 // cookie-parser
 app.use(cookieParser()); // Correct initialization
 
-
 // TODO:-
 // .env file for both frontend and backend:-
 
-
 // Serve static files
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 
 // Enable CORS for cross-origin requests
 app.use(
@@ -37,15 +35,20 @@ const { authRouter } = require("./routes/auth");
 const { profileRouter } = require("./routes/profile");
 const { requestRouter } = require("./routes/request");
 const { userRouter } = require("./routes/user");
+const chatRouter = require("./routes/chat");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
+app.use("/",chatRouter);
+
+const server = http.createServer(app);
+initializeSocket(server);
 
 connectDB();
-app.listen(process.env.PORT, () => {
-  console.log("Server is listening on port 4000");
+server.listen(process.env.PORT, () => {
+  console.log("Server is listening on port 7777");
 });
 
 // extras:-
