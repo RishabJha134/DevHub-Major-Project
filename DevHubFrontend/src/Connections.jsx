@@ -14,6 +14,7 @@ const Connections = () => {
       const res = await axios.get("http://localhost:7777/user/connections", {
         withCredentials: true,
       });
+      console.log("response from Connections component: " + JSON.stringify(res.data.data));
       dispatch(addConnections(res.data.data));
     } catch (err) {
       // Handle Error Case
@@ -34,6 +35,7 @@ const Connections = () => {
       <h1 className="text-bold text-white text-3xl">Connections</h1>
 
       {connections.map((connection) => {
+        console.log("connection from Connection:" + JSON.stringify(connection));
         const { _id, firstName, lastName, photoUrl, age, gender, about } =
           connection;
 
@@ -66,4 +68,3 @@ const Connections = () => {
   );
 };
 export default Connections;
-

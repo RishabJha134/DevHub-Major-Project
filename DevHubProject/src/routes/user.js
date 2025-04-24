@@ -37,8 +37,8 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 
     const connections = await ConnectionRequest.find({
       $or: [
-        { fromUserId: loggedInUser._id, status: "accepted" },
         { toUserId: loggedInUser._id, status: "accepted" },
+        { fromUserId: loggedInUser._id, status: "accepted" },
       ],
     })
       .populate(
@@ -52,7 +52,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 
     console.log(connections);
     const data = connections.map((item) => {
-      if (item.fromUserId.toString() === item.toUserId.toString()) {
+      if (item.fromUserId._id.toString() === loggedInUser._id.toString()) {
         return item.toUserId;
       }
       return item.fromUserId;
