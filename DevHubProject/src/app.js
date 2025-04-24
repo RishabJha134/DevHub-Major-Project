@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const http = require("http");
 require("dotenv").config();
-require("./utils/cron");
+// require("./utils/cron");
 // console.log(process.env)
 
 // database connection:-

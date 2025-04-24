@@ -60,7 +60,7 @@ const Login = () => {
     try {
       const res = await axios.post(
         "http://localhost:7777" + "/signup",
-        { firstName, lastName, emailId: email , password },
+        { firstName, lastName, emailId: email, password },
         { withCredentials: true }
       );
       dispatch(addUser(res.data.data));

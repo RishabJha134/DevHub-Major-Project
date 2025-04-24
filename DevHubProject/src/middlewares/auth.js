@@ -2,10 +2,11 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models/user");
 
 const userAuth = async (req, res, next) => {
+  console.log("userAuth called");
   try {
     // step1:- Read the token from the req cookies.
     const token = req.cookies.token;
-    // console.log("tokenwvnvwnjnwnvrkrvlnrvrvnkkrvnmnrvn" + token);
+    console.log("token from auth.js " + token);
 
     if (!token) {
       // throw new Error("Invalid token!");
@@ -15,9 +16,12 @@ const userAuth = async (req, res, next) => {
 
     // step2:- Validate the token:-
     const decodedMessage = jwt.verify(token, "secret-key");
+
+    console.log("decodedMessage" + JSON.stringify(decodedMessage));
     
-    // const { _id } = decodedMessage.token;
-    console.log("decodedMessage.token" + JSON.stringify(decodedMessage.token));
+    
+    console.log("decodedMessage._id " + decodedMessage._id);
+    // console.log("decodedMessage.token" + JSON.stringify(decodedMessage.token));
     // console.log(_id)
 
     // const _id = decodedMessage.token;

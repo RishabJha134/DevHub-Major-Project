@@ -3,8 +3,10 @@ import UserCard from "./UserCard";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "./utils/userSlice";
+import { useNavigate } from 'react-router';
 
 const EditProfile = ({ user }) => {
+  const navigate = useNavigate();
   console.log("User from EditProfile:", JSON.stringify(user));
 
   const { firstName, lastName, photoUrl, age, gender, about } = user;
@@ -55,6 +57,8 @@ const EditProfile = ({ user }) => {
       dispatch(addUser(res?.data?.data)); // Update Redux store
       setShowToast(true); // Show success toast
       setTimeout(() => setShowToast(false), 3000); // Hide toast after 3 seconds
+      navigate("/");
+
     } catch (err) {
       console.log("Error from edit profile:", err);
       setError(

@@ -20,13 +20,13 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
   }
 });
 
-
 // Profile edit route
 profileRouter.patch(
   "/profile/edit",
   userAuth,
   upload.single("photoFile"),
   async (req, res) => {
+    console.log("hello from edit profile.js file ");
     try {
       const loggedInUser = req.user;
 
@@ -38,7 +38,10 @@ profileRouter.patch(
       if (age && isNaN(age)) {
         throw new Error("Age must be a valid number.");
       }
-      if (gender && !["male", "female", "other"].includes(gender.toLowerCase())) {
+      if (
+        gender &&
+        !["male", "female", "other"].includes(gender.toLowerCase())
+      ) {
         throw new Error("Gender must be 'male', 'female', or 'other'.");
       }
 
@@ -57,6 +60,8 @@ profileRouter.patch(
       // Save changes to the database
       await loggedInUser.save();
 
+      console.log("User profile updated successfully from profile.js.", loggedInUser);
+
       res.status(200).json({
         message: `${loggedInUser.firstName}, your profile was edited successfully.`,
         data: loggedInUser,
@@ -67,7 +72,6 @@ profileRouter.patch(
     }
   }
 );
-
 
 profileRouter.patch("/profile/password", userAuth, async (req, res) => {
   try {
