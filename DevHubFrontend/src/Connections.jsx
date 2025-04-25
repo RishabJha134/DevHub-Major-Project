@@ -13,7 +13,7 @@ const Connections = () => {
   const fetchConnections = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:7777/user/connections", {
+      const res = await axios.get("https://devmatch-major-project.onrender.com/user/connections", {
         withCredentials: true,
       });
       console.log(

@@ -16,7 +16,7 @@ const Requests = () => {
 
     try {
       await axios.post(
-        `http://localhost:7777/request/review/${status}/${_id}`,
+        `https://devmatch-major-project.onrender.com/request/review/${status}/${_id}`,
         {},
         { withCredentials: true }
       );
@@ -34,7 +34,7 @@ const Requests = () => {
     setIsLoading(true);
     try {
       const res = await axios.get(
-        "http://localhost:7777/user/requests/recieved",
+        "https://devmatch-major-project.onrender.com/user/requests/recieved",
         {
           withCredentials: true,
         }

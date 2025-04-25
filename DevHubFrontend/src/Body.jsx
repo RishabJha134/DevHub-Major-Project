@@ -15,7 +15,7 @@ const Body = () => {
   const fetchUser = async () => {
     if (userData) return;
     try {
-      const res = await axios.get("http://localhost:7777/profile/view", {
+      const res = await axios.get("https://devmatch-major-project.onrender.com/profile/view", {
         withCredentials: true,
       });
       dispatch(addUser(res.data.data));

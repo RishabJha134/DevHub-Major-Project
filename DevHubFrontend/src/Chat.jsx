@@ -47,7 +47,7 @@ const Chat = () => {
   };
 
   const fetchChatMessages = async () => {
-    const chat = await axios.get(`http://localhost:7777/chat/${targetUserId}`, {
+    const chat = await axios.get(`https://devmatch-major-project.onrender.com/chat/${targetUserId}`, {
       withCredentials: true,
     });
 
@@ -64,7 +64,7 @@ const Chat = () => {
   const fetchUserDetails = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:7777/getUserDetails/${targetUserId}`,
+        `https://devmatch-major-project.onrender.com/getUserDetails/${targetUserId}`,
         {
           withCredentials: true,
         }

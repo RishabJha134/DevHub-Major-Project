@@ -18,7 +18,7 @@ const Feed = () => {
     const getFeed = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:7777/user/feed", {
+        const res = await axios.get("https://devmatch-major-project.onrender.com/user/feed", {
           withCredentials: true,
         });
         dispatch(addFeed(res?.data?.data));

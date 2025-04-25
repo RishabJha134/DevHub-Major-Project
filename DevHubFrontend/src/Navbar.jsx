@@ -40,7 +40,7 @@ const Navbar = () => {
   async function handleLogout() {
     try {
       const response = await axios.post(
-        "http://localhost:7777/logout",
+        "https://devmatch-major-project.onrender.com/logout",
         {},
         {
           withCredentials: true,

@@ -29,7 +29,7 @@ const UserCard = ({ user = {} }) => {
     setTimeout(async () => {
       try {
         const response = await axios.post(
-          "http://localhost:7777" + "/request/send/" + status + "/" + id,
+          "https://devmatch-major-project.onrender.com" + "/request/send/" + status + "/" + id,
           {},
           {
             withCredentials: true,

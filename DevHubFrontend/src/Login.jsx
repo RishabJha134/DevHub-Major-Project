@@ -29,7 +29,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7777/login",
+        "https://devmatch-major-project.onrender.com/login",
         {
           emailId: email,
           password: password,
@@ -63,7 +63,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:7777" + "/signup",
+        "https://devmatch-major-project.onrender.com" + "/signup",
         { firstName, lastName, emailId: email, password },
         { withCredentials: true }
       );

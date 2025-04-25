@@ -50,7 +50,7 @@ const EditProfile = ({ user }) => {
       formData.append("about", abouts);
 
       const res = await axios.patch(
-        "http://localhost:7777/profile/edit",
+        "https://devmatch-major-project.onrender.com/profile/edit",
         formData,
         {
           withCredentials: true,
