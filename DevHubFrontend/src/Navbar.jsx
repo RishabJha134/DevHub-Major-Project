@@ -50,7 +50,7 @@ const Navbar = () => {
       );
       console.log(response);
       dispatch(removeUser());
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       console.error("Error logging out user: ", err);
     }
