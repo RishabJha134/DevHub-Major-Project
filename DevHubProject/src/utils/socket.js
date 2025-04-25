@@ -13,7 +13,13 @@ const getSecretRoomId = (userId, targetUserId) => {
 const initializeSocket = (server) => {
   const io = socket(server, {
     cors: {
-      origin: "http://localhost:5173",
+      // Allow connections from both local development and your Vercel deployment
+      origin: [
+        "https://dev-match-major-project.vercel.app",
+        "https://dev-match-major-project-git-main-rishab-jha-projects.vercel.app",
+        "https://dev-match-major-project-bu0pky9kl-rishab-jha-projects.vercel.app",
+        "https://dev-match-major-project-rishab-jha-projects.vercel.app",
+      ],
     },
   });
 
