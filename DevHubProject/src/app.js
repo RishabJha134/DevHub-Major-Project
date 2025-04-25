@@ -26,10 +26,10 @@ app.use(cookieParser()); // Correct initialization
 // Enable CORS for cross-origin requests
 // Allowed Frontend URLs
 const allowedOrigins = [
-  "https://dev-match-major-project.vercel.app/",
-  "https://dev-match-major-project-git-main-rishab-jha-projects.vercel.app/",
-  "https://dev-match-major-project-bu0pky9kl-rishab-jha-projects.vercel.app/",
-  "https://dev-match-major-project-rishab-jha-projects.vercel.app/",
+  "https://dev-match-major-project.vercel.app",
+  "https://dev-match-major-project-git-main-rishab-jha-projects.vercel.app",
+  "https://dev-match-major-project-bu0pky9kl-rishab-jha-projects.vercel.app",
+  "https://dev-match-major-project-rishab-jha-projects.vercel.app",
 ];
 
 // Configure CORS
