@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const http = require("http");
 require("dotenv").config();
+const { rateLimit } = require("express-rate-limit");
+
 // require("./utils/cron");
 // console.log(process.env)
 
@@ -43,6 +45,12 @@ app.use(express.json());
 // cookie-parser
 app.use(cookieParser()); // Correct initialization
 
+const rateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 100, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests, please try again later.",
+});
+
 // TODO:-
 // .env file for both frontend and backend:-
 
@@ -56,6 +64,9 @@ const { requestRouter } = require("./routes/request");
 const { userRouter } = require("./routes/user");
 const initializeSocket = require("./utils/socket");
 const chatRouter = require("./routes/chat");
+
+// we want to secure for all the routes:-
+app.use(rateLimiter); // Apply rate limiting to all requests
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
