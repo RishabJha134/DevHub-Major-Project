@@ -76,7 +76,7 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
     }
     const skip = (page - 1) * limit;
 
-    console.log("page=" + page + " limit=" +limit + " skip=" + skip)
+    console.log("page=" + page + " limit=" + limit + " skip=" + skip);
     // agar connectonRequestSchema me already user present hai iska matlab hai ki either his status is skip,interested,accepted,rejected so no need to show in the feed.
     //1. if status is skip or interested then it is not show in feed because request is already in progress:-
     //2. if already present in the connection then it is not show in feed only fresh/new users:-
@@ -116,11 +116,29 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-      console.log("freshUsers->" + freshUsers);
+    console.log("freshUsers->" + freshUsers);
 
     res.json({
       message: "connection requests send and recieve",
       data: freshUsers,
+    });
+  } catch (err) {
+    res.status(400).send("Error:" + err.message);
+  }
+});
+
+userRouter.get("/getUserDetails/:id", userAuth, async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId);
+    console.log("user Details->" + user);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      message: "User Details",
+      data: user,
     });
   } catch (err) {
     res.status(400).send("Error:" + err.message);

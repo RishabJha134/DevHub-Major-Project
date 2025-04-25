@@ -1,3 +1,339 @@
+/* Main Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ========== ANIMATION KEYFRAMES ========== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes swipeRight {
+  from {
+    transform: translateX(0) rotate(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(120%) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes swipeLeft {
+  from {
+    transform: translateX(0) rotate(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-120%) rotate(-15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: currentColor;
+  }
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes typingBounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* ========== ANIMATION CLASSES ========== */
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+  -webkit-animation: fadeIn 0.5s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+  -webkit-animation: float 3s ease-in-out infinite;
+}
+
+.swipe-right {
+  animation: swipeRight 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+  -webkit-animation: swipeRight 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97)
+    forwards;
+}
+
+.swipe-left {
+  animation: swipeLeft 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+  -webkit-animation: swipeLeft 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97)
+    forwards;
+}
+
+.match-animation {
+  animation: scale 0.5s ease-in-out;
+  -webkit-animation: scale 0.5s ease-in-out;
+}
+
+/* Typing animation for chat */
+.typing-animation {
+  display: inline-block;
+  overflow: hidden;
+  border-right: 0.15em solid;
+  white-space: nowrap;
+  margin: 0;
+  letter-spacing: 0.15em;
+  animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+  -webkit-animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+}
+
+/* ========== COMPONENT STYLES ========== */
+/* Developer badge styles */
+.developer-badge {
+  @apply px-3 py-1 text-xs font-semibold rounded-full;
+}
+
+.frontend-badge {
+  @apply text-white bg-gradient-to-r from-blue-500 to-indigo-600;
+}
+
+.backend-badge {
+  @apply text-white bg-gradient-to-r from-green-500 to-teal-600;
+}
+
+.fullstack-badge {
+  @apply text-white bg-gradient-to-r from-purple-500 to-pink-600;
+}
+
+.mobile-badge {
+  @apply text-white bg-gradient-to-r from-yellow-500 to-orange-500;
+}
+
+/* Glass effect for cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Code pattern background */
+.code-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.05'%3E%3Cpath d='M20 40L0 20v40zm60-40L60 0v80zM0 0h40L0 40zm0 80L20 60H0zm60 0l20-20v20zm20-80L60 20h20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Shine effect for hover states */
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20%;
+  height: 200%;
+  opacity: 0;
+  transform: rotate(30deg);
+  background: rgba(255, 255, 255, 0.13);
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.13) 77%,
+    rgba(255, 255, 255, 0.5) 92%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.shine-effect:hover::after {
+  opacity: 1;
+  left: 130%;
+  transition: left 0.7s ease-in-out;
+}
+
+/* Tech stack icons styling */
+.tech-icon {
+  @apply flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 shadow-sm transition-all duration-300 hover:scale-110;
+}
+
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+/* Chat message styles */
+.message-sent {
+  @apply bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl p-4 self-end max-w-xs lg:max-w-md;
+  animation: slideInRight 0.3s ease-out;
+  -webkit-animation: slideInRight 0.3s ease-out;
+}
+
+.message-received {
+  @apply bg-gray-100 text-gray-800 rounded-tl-2xl rounded-tr-2xl rounded-br-2xl p-4 self-start max-w-xs lg:max-w-md;
+  animation: slideInLeft 0.3s ease-out;
+  -webkit-animation: slideInLeft 0.3s ease-out;
+}
+
+/* Typing indicator for chat */
+.typing-indicator {
+  @apply flex space-x-1 p-2;
+}
+
+.typing-indicator span {
+  @apply w-2 h-2 bg-gray-400 rounded-full;
+  animation: typingBounce 1.4s infinite ease-in-out both;
+  -webkit-animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typing-indicator span:nth-child(1) {
+  animation-delay: -0.32s;
+  -webkit-animation-delay: -0.32s;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: -0.16s;
+  -webkit-animation-delay: -0.16s;
+}
+
+/* Code syntax highlighting styles */
+.code-snippet {
+  @apply font-mono text-sm p-4 rounded-lg bg-gray-800 text-gray-100 overflow-auto;
+}
+
+.code-keyword {
+  @apply text-purple-400;
+}
+
+.code-string {
+  @apply text-green-400;
+}
+
+.code-function {
+  @apply text-yellow-400;
+}
+
+.code-comment {
+  @apply text-gray-500;
+}
+
+/* Profile completion progress bar */
+.profile-progress {
+  @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+}
+
+.profile-progress-bar {
+  @apply h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out forwards;
+}
