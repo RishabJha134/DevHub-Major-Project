@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 // dynamic signup routes:-
 authRouter.post("/signup", async (req, res) => {
-  console.log("hello i am from signup in auth.js")
+  console.log("hello i am from signup in auth.js");
   try {
     // step1:- validation:-
     validateSignUpData(req);
@@ -33,8 +33,14 @@ authRouter.post("/signup", async (req, res) => {
     console.log("saved user from auth.js" + savedUser);
     const token = await savedUser.getJWT();
 
+    // step2:- set the jwt token inside the cookies and then send back to the server:-
+    // step2:- set the jwt token inside the cookies and then send back to the server:-
     res.cookie("token", token, {
-      expires: new Date(Date.now() + 8 * 3600000),
+      expires: new Date(Date.now() + 8 * 3600000), // 8 hours from now
+      httpOnly: true,
+      secure: true, // Always use secure with cross-domain setup
+      sameSite: "none", // Critical for cross-domain cookies
+      path: "/",
     });
 
     res.json({ message: "user saved successfully", data: savedUser });
@@ -75,8 +81,13 @@ authRouter.post("/login", async (req, res) => {
       console.log(token);
 
       // step2:- set the jwt token inside the cookies and then send back to the server:-
+      // step2:- set the jwt token inside the cookies and then send back to the server:-
       res.cookie("token", token, {
-        expires: new Date(Date.now() + 8 * 3600000),
+        expires: new Date(Date.now() + 8 * 3600000), // 8 hours from now
+        httpOnly: true,
+        secure: true, // Always use secure with cross-domain setup
+        sameSite: "none", // Critical for cross-domain cookies
+        path: "/",
       });
       // res.json("Login success!", user);
       res.json({

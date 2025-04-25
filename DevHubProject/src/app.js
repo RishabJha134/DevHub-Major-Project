@@ -1,6 +1,6 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
+const app = express();
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const http = require("http");
@@ -10,18 +10,6 @@ require("dotenv").config();
 
 // database connection:-
 const { connectDB } = require("./config/database");
-
-// middleware is active for all the routes:- convert backend ke andar ka json data jo hum bhej rahe hai usko js object me kar rha hai. json -> js objects and make this readable for in the req.body in every api:-
-app.use(express.json());
-
-// cookie-parser
-app.use(cookieParser()); // Correct initialization
-
-// TODO:-
-// .env file for both frontend and backend:-
-
-// Serve static files
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Enable CORS for cross-origin requests
 // Allowed Frontend URLs
@@ -48,6 +36,18 @@ const corsOptions = {
 
 // Use CORS middleware
 app.use(cors(corsOptions));
+
+// middleware is active for all the routes:- convert backend ke andar ka json data jo hum bhej rahe hai usko js object me kar rha hai. json -> js objects and make this readable for in the req.body in every api:-
+app.use(express.json());
+
+// cookie-parser
+app.use(cookieParser()); // Correct initialization
+
+// TODO:-
+// .env file for both frontend and backend:-
+
+// Serve static files
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routing:-
 const { authRouter } = require("./routes/auth");
