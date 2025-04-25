@@ -9,7 +9,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "profile_pictures", // Folder in Cloudinary
-    allowed_formats: ["jpg", "jpeg", "png","webp"], // Allowed file types
+    allowed_formats: ["jpg", "jpeg", "png","webp","avif"], // Allowed file types
   },
 });
 
