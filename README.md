@@ -1,8 +1,8 @@
 ---
 
-# 🚀 DevHub - Connect, Match, and Collaborate with Developers in Real-Time!
+# 🚀 DevMatch - Connect, Match, and Collaborate with Developers in Real-Time!
 
-Welcome to **DevHub** — a real-time full-stack platform where developers can **swipe, match, chat, and collaborate**!  
+Welcome to **DevMatch** — a real-time full-stack platform where developers can **swipe, match, chat, and collaborate**!  
 Think **Tinder for Developers** — but built with powerful tech like **React**, **Node.js**, **Socket.IO**, and more!
 
 ---
@@ -35,7 +35,7 @@ Think **Tinder for Developers** — but built with powerful tech like **React**,
 ## 📸 Project Structure
 
 ```bash
-DevHubFrontend/
+DevMatchFrontend/
   ├── public/
   ├── src/
   ├── index.html
@@ -44,7 +44,7 @@ DevHubFrontend/
   ├── vite.config.js
   └── ...other configs
 
-DevHubProject/
+DevMatchProject/
   ├── src/
       └── app.js
   ├── package.json
@@ -67,7 +67,7 @@ DevHubProject/
 
 ```bash
 git clone https://github.com/RishabJha134/DevMatch-Major-Project.git
-cd DevHubFrontend
+cd DevMatchFrontend
 ```
 
 ---
@@ -76,11 +76,11 @@ cd DevHubFrontend
 
 ```bash
 # Frontend
-cd DevHubFrontend
+cd DevMatchFrontend
 npm install
 
 # Backend
-cd ../DevHubProject
+cd ../DevMatchProject
 npm install
 ```
 
@@ -88,7 +88,7 @@ npm install
 
 ### 3. Setup Environment Variables
 
-Create a `.env` file inside the `DevHubProject` folder.
+Create a `.env` file inside the `DevMatchProject` folder.
 
 Example:
 
@@ -106,11 +106,11 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 ```bash
 # Backend
-cd DevHubProject
+cd DevMatchProject
 npm run dev
 
 # Frontend
-cd ../DevHubFrontend
+cd ../DevMatchFrontend
 npm run dev
 ```
 
@@ -118,7 +118,7 @@ npm run dev
 
 ## 🌐 Live Demo
 
-🔗 [Try DevHub Live](https://dev-match-major-project.vercel.app)
+🔗 [Try DevMatch Live](https://dev-match-major-project.vercel.app)
 
 ---
 
@@ -153,7 +153,7 @@ If you liked my work, please **connect** or **refer** me 🙏
 
 ## 📌 Important Scripts
 
-**Frontend (`DevHubFrontend/package.json`)**
+**Frontend (`DevMatchFrontend/package.json`)**
 
 ```json
 "scripts": {
@@ -163,7 +163,7 @@ If you liked my work, please **connect** or **refer** me 🙏
 }
 ```
 
-**Backend (`DevHubProject/package.json`)**
+**Backend (`DevMatchProject/package.json`)**
 
 ```json
 "scripts": {
@@ -180,7 +180,7 @@ Feel free to fork this repo, raise issues, or submit pull requests to improve th
 
 ---
 
-# 🚀 DevHub - Built With ❤️ by Rishab Jha
+# 🚀 DevMatch - Built With ❤️ by Rishab Jha
 
 ---
 
