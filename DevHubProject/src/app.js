@@ -24,12 +24,30 @@ app.use(cookieParser()); // Correct initialization
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Enable CORS for cross-origin requests
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Allow all origins
-    credentials: true, // Allow sending cookies
-  })
-);
+// Allowed Frontend URLs
+const allowedOrigins = [
+  "https://dev-match-major-project.vercel.app/",
+  "https://dev-match-major-project-git-main-rishab-jha-projects.vercel.app/",
+  "https://dev-match-major-project-bu0pky9kl-rishab-jha-projects.vercel.app/",
+  "https://dev-match-major-project-rishab-jha-projects.vercel.app/",
+];
+
+// Configure CORS
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true, // Include if using cookies or credentials
+};
+
+// Use CORS middleware
+app.use(cors(corsOptions));
 
 // Routing:-
 const { authRouter } = require("./routes/auth");
@@ -52,6 +70,8 @@ connectDB();
 server.listen(process.env.PORT, () => {
   console.log("Server is listening on port 7777");
 });
+
+// this is just for testing purpose:-
 
 // extras:-
 // static signup static routes:-
