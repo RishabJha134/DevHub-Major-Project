@@ -12,6 +12,8 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  console.log("user from navbar: " + JSON.stringify(user));
+
   // Track scroll position for navbar effects
   useEffect(() => {
     const handleScroll = () => {
@@ -48,7 +50,7 @@ const Navbar = () => {
       );
       console.log(response);
       dispatch(removeUser());
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       console.error("Error logging out user: ", err);
     }
